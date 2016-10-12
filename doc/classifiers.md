@@ -31,5 +31,6 @@ not include references to other routing tables.
 UI
 ==
 
-An account administrator should be able to create, view and edit access tables and routing tables, including definition of classes of numbers, and should be able to associate these tables within account with carrier/account/user/device.
+An account administrator should be able to create, view and edit access tables and routing tables, including definition of classes
+of numbers, and should be able to associate these tables within account with carrier/account/user/device.
 While editing these tables an administrator should be able to change order of rows.
