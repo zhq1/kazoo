@@ -199,7 +199,7 @@ maybe_kamailio_association(Id, Props, Node) ->
         andalso kz_util:is_not_empty(kzd_freeswitch:authorizing_type(Props))
     of
         'true' -> kamailio_association(Id, Props, Node);
-        'false' -> directory_not_found(Node, Id)
+        'false' -> lookup_user(Node, Id, <<"password">>, Props)
     end.
 
 -spec kamailio_association(ne_binary(), kz_proplist(), atom()) -> fs_handlecall_ret().

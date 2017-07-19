@@ -29,11 +29,17 @@
 
 -define(SERVER, ?MODULE).
 
--define(RESPONDERS, [{'ts_route_req', [{<<"dialplan">>, <<"route_req">>}]}]).
+-define(RESPONDERS, [{'ts_route_req', [{<<"dialplan">>, <<"route_req">>}]}
+                     ,{'ts_authn_req'
+                      ,[{<<"directory">>, <<"authn_req">>}]
+                      }
+                    ]).
 -define(BINDINGS, [{'route', [{'types', ?RESOURCE_TYPES_HANDLED}
                              ,{'restrict_to', ['account']}
                              ]
-                   }]).
+                   }
+                   ,{'authn', []}
+                  ]).
 
 -define(ROUTE_QUEUE_NAME, <<"trunkstore_listener">>).
 -define(ROUTE_QUEUE_OPTIONS, [{'exclusive', 'false'}]).
