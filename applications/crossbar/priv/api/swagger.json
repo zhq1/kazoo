@@ -22145,6 +22145,9 @@
                     ],
                     "type": "string"
                 },
+                "Outbound-Call-Control-PID": {
+                    "type": "string"
+                },
                 "Outbound-Call-Control-Queue": {
                     "type": "string"
                 },
