@@ -144,10 +144,20 @@ maybe_export_vars(Node, UUID, Props) ->
                         _ = export(Node, UUID, [{K, V}]),
                         Acc;
                    ({<<"ringback">> = K, V}, Acc) ->
-                        _ = export(Node, UUID, [{K, V}]),
+			_ = export_ringback(Node, UUID, K, V),
                         Acc;
                    (KV, Acc) -> [KV| Acc]
                 end, [], Props).
+
+-spec export_ringback(atom(), kz_term:ne_binary(), _, _) -> 'ok'.
+export_ringback(Node, UUID, K, V) ->
+    Exports = ecallmgr_util:process_fs_kv(Node, UUID, [{K, V}], 'export'),
+    lager:debug("~p sendmsg export ~p ~p", [Node, UUID, Exports]),
+    _ = freeswitch:sendmsg(Node, UUID, [{"call-command", "execute"}
+                                       ,{"execute-app-name", "kz_export"}
+                                       ,{"execute-app-arg", ecallmgr_util:fs_args_to_binary(Exports, <<"|">>)}
+                                       ]),
+    'ok'.
 
 -spec api(atom(), atom(), binary()) -> ecallmgr_util:send_cmd_ret().
 api(Node, Cmd, Args) ->
