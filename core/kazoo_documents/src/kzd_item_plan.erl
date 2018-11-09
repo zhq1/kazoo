@@ -23,7 +23,7 @@
         ,exceptions/1, exceptions/2
         ,should_cascade/1, should_cascade/2
         ,masquerade_as/1, masquerade_as/2
-        ,name/1
+        ,name/1, name/2
         ,discounts/1, discounts/2
         ,single_discount/1, single_discount/2
         ,single_discount_rates/1, single_discount_rates/2
@@ -46,7 +46,6 @@
 
 -define(ACTIVATION_CHARGE, <<"activation_charge">>).
 -define(MINIMUM, <<"minimum">>).
--define(MAXIMUM, <<"maximum">>).
 -define(FLAT_RATES, <<"flat_rates">>).
 -define(FLAT_RATE, <<"flat_rate">>).
 -define(RATES, <<"rates">>).
@@ -240,10 +239,11 @@ masquerade_as(ItemPlan, Default) ->
 
 -spec name(doc()) -> kz_term:api_binary().
 name(ItemPlan) ->
-    case kz_json:get_value(?NAME, ItemPlan) of
-        'undefined' -> masquerade_as(ItemPlan);
-        Name -> Name
-    end.
+    name(ItemPlan, 'undefined').
+
+-spec name(doc(), Default) -> kz_term:ne_binary() | Default.
+name(ItemPlan, Default) ->
+    kz_json:get_ne_value(?NAME, ItemPlan, Default).
 
 -spec discounts(doc()) -> kz_json:object().
 discounts(ItemPlan) ->

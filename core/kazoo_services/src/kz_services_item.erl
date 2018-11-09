@@ -41,7 +41,6 @@
 -export([display_name/1]).
 -export([rate/1]).
 -export([minimum/1]).
--export([prorate/1]).
 -export([masquerade_as/1]).
 -export([should_cascade/1]).
 
@@ -80,6 +79,7 @@
              ,setter_fun/0
              ,setter_funs/0
              ]).
+
 %%------------------------------------------------------------------------------
 %% @doc
 %% @end
@@ -570,7 +570,11 @@ calculate_quantity_rate(_Services, Item) ->
 %% @doc
 %% @end
 %%------------------------------------------------------------------------------
--spec calcualte_single_discount(kz_services:services(), item()) -> item().
+-spec calculate_discounts(kz_services:services(), item()) -> item().
+calculate_discounts(Services, Item) ->
+    calculate_single_discount(Services, Item).
+
+-spec calculate_single_discount(kz_services:services(), item()) -> item().
 calculate_single_discount(_Services, Item) ->
     DiscountPlan = kzd_item_plan:single_discount(item_plan(Item)),
     case should_set_discount(Item, DiscountPlan) of
@@ -579,12 +583,6 @@ calculate_single_discount(_Services, Item) ->
             Rate = kz_json:get_float_value(<<"rate">>, DiscountPlan, rate(Item)),
             set_single_discount_rate(Item, Rate)
     end.
-
-
-
-
-    
-
 
 %%------------------------------------------------------------------------------
 %% @doc
@@ -739,3 +737,4 @@ has_removals(Item) ->
             Key = [<<"difference">>, <<"quantity">>],
             props:get_integer_value(Key, Changes, 0) < 0
     end.
+
