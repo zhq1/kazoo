@@ -30218,6 +30218,7 @@
                     "type": "boolean"
                 },
                 "sofia_conf": {
+                    "default": false,
                     "description": "ecallmgr sofia conf",
                     "type": "boolean"
                 },
