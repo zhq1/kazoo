@@ -730,7 +730,7 @@ classify_endpoints([], Devices, Failover) ->
     {Devices, Failover};
 classify_endpoints([Endpoint | Endpoints], Devices, Failover) ->
     case string:str(unicode:characters_to_list(Endpoint), "ecallmgr_Call-Forward='true'") of
-         %% Not a forwarding endpoint move along.
+        %% Not a forwarding endpoint move along.
         0 -> classify_endpoints(Endpoints, [Endpoint | Devices], Failover);
         %% Determine if we should add the call forwarding route.
         _ ->
