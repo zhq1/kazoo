@@ -713,6 +713,7 @@ build_bridge_string(Endpoints, Separator, _DefaultFailover) ->
     %% NOTE: don't use binary_join here as it will crash on an empty list...
     kz_binary:join(lists:reverse(BridgeStrings), Separator).
 
+-spec filter_bridge_strings(bridge_channels()) -> bridge_channels().
 filter_bridge_strings(Endpoints) ->
     case classify_endpoints(Endpoints) of
         {[], Failover} ->
@@ -723,9 +724,11 @@ filter_bridge_strings(Endpoints) ->
             Devices
     end.
 
+-spec classify_endpoints(bridge_channels()) -> {bridge_channels(), bridge_channels()}.
 classify_endpoints(Endpoints) ->
     classify_endpoints(Endpoints, [], []).
 
+-spec classify_endpoints(bridge_channels(), bridge_channels(), bridge_channels()) -> {bridge_channels(), bridge_channels()}.
 classify_endpoints([], Devices, Failover) ->
     {Devices, Failover};
 classify_endpoints([Endpoint | Endpoints], Devices, Failover) ->
@@ -738,7 +741,7 @@ classify_endpoints([Endpoint | Endpoints], Devices, Failover) ->
             classify_endpoints(Endpoints, Devices, F2)
     end.
 
-%% dedupe failover endpoints
+-spec maybe_use_fwd_endpoint(bridge_channels(), bridge_channel()) -> bridge_channel().
 maybe_use_fwd_endpoint([], Destination) ->
     [Destination];
 maybe_use_fwd_endpoint([Endpoint | Endpoints], Destination) ->
